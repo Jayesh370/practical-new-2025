@@ -1,0 +1,51 @@
+# 1. Import all required libraries
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+
+df = pd.read_csv('Iris.csv')
+
+# 4. Load dataset into pandas dataframe
+print("\nFirst 5 rows of the dataset:")
+print(df.head())
+
+# 5. Data Preprocessing
+print("\nCheck for missing values:")
+print(df.isnull().sum())  # No missing values
+
+print("\nInitial statistics of dataset:")
+print(df.describe(include='all'))
+
+print("\nData types of each column:")
+print(df.dtypes)
+
+print("\nShape of the dataset (rows, columns):", df.shape)
+
+# 6. Data Formatting and Normalization
+# Summarize types of variables
+numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+print("\nNumeric columns:", numeric_cols)
+print("Categorical columns:", categorical_cols)
+
+# Normalize numeric columns using MinMaxScaler
+scaler = MinMaxScaler()
+df_scaled = df.copy()
+df_scaled[numeric_cols] = scaler.fit_transform(df[numeric_cols])
+print("\nNormalized numeric data (first 5 rows):")
+print(df_scaled[numeric_cols].head())
+
+# 7. Convert Categorical to Quantitative
+# Using Label Encoding
+le = LabelEncoder()
+df_scaled['Species_label'] = le.fit_transform(df_scaled['Species'])
+
+# Optional: One-hot encoding
+df_one_hot = pd.get_dummies(df_scaled['Species'], prefix='Species')
+
+# Combine everything into final dataframe
+df_final = pd.concat([df_scaled, df_one_hot], axis=1)
+
+# Display final dataset
+print("\nFinal DataFrame with encoded categorical variables:")
+print(df_final.head())

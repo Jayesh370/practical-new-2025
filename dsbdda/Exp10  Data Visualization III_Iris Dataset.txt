@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load Iris dataset
+iris = sns.load_dataset('iris')
+
+# 1. List down the features and their types
+print("Dataset Info:")
+print(iris.info())
+print("\nFeature Names and Data Types:")
+print(iris.dtypes)
+
+# 2. Create histograms for each numeric feature
+fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+sns.histplot(iris['sepal_length'], kde=True, ax=axes[0, 0])
+sns.histplot(iris['sepal_width'], kde=True, ax=axes[0, 1])
+sns.histplot(iris['petal_length'], kde=True, ax=axes[1, 0])
+sns.histplot(iris['petal_width'], kde=True, ax=axes[1, 1])
+fig.suptitle("Histograms of Iris Features")
+plt.tight_layout()
+plt.show()
+
+# 3. Create box plots for each feature to check for outliers by species
+fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+sns.boxplot(y='petal_length', x='species', data=iris, ax=axes[0, 0])
+sns.boxplot(y='petal_width', x='species', data=iris, ax=axes[0, 1])
+sns.boxplot(y='sepal_length', x='species', data=iris, ax=axes[1, 0])
+sns.boxplot(y='sepal_width', x='species', data=iris, ax=axes[1, 1])
+fig.suptitle("Boxplots of Iris Features by Species")
+plt.tight_layout()
+plt.show()

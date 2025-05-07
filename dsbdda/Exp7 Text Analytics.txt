@@ -1,0 +1,63 @@
+# Install necessary libraries if not already installed
+
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Download necessary resources from NLTK
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+text = """India is a vast country with second highest population in the world.
+It has diverse cultures and festivals like Diwali, Holi, and Christmas.
+People celebrate unity in diversity with joy and harmony."""
+
+# Tokenization: Split text into sentences and words
+sentences = sent_tokenize(text)
+print("Sentences:", sentences)
+
+words = word_tokenize(text)
+print("Words:", words)
+
+# Stopwords removal: Filtering out common words (like 'the', 'is', etc.)
+stop_words = set(stopwords.words('english'))
+filtered_words = [word for word in words if word.lower() not in stop_words]
+
+print("Filtered Words (No Stopwords):", filtered_words)
+
+# Stemming: Reducing words to their base form
+stemmer = PorterStemmer()
+stemmed_words = [stemmer.stem(word) for word in filtered_words]
+
+print("Stemmed Words:", stemmed_words)
+
+# Text preprocessing: Removing non-alphabetical characters and converting to lowercase
+processed_sentences = []
+for sentence in sentences:
+    clean_sentence = re.sub('[^a-zA-Z]', ' ', sentence)
+    clean_sentence = clean_sentence.lower()
+    processed_sentences.append(clean_sentence)
+
+# Applying Lemmatization to preprocessed sentences
+lemmatizer = WordNetLemmatizer()
+corpus = []
+for sentence in processed_sentences:
+    words_in_sentence = sentence.split()
+    lemmatized_sentence = ' '.join([lemmatizer.lemmatize(word) for word in words_in_sentence if word not in stop_words])
+    corpus.append(lemmatized_sentence)
+
+print("Processed Corpus (Lemmatized and without Stopwords):", corpus)
+
+# Term Frequency-Inverse Document Frequency (TF-IDF) vectorization
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(corpus).toarray()
+
+# Display TF-IDF values
+print("TF-IDF Matrix:")
+print(tfidf_matrix)
+

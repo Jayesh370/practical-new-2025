@@ -1,0 +1,40 @@
+# Import libraries
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+#(dont need loacal dataset) Seaborn provides several built-in datasets, including the Titanic dataset, which is automatically downloaded when you call sns.load_dataset('titanic').
+titanic = sns.load_dataset('titanic')
+
+# 4.1: Histogram of Fare (Addressing point 2 of the assignment)
+plt.figure(figsize=(8, 6))
+sns.histplot(titanic['fare'], bins=30, kde=True)
+plt.title('Distribution of Ticket Fare')
+plt.xlabel('Fare')
+plt.ylabel('Frequency')
+plt.show()
+
+# 4.2: Exploring patterns (Addressing point 1 of the assignment - showing a few examples)
+
+# Relationship between Fare and Passenger Class
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='pclass', y='fare', data=titanic)
+plt.title('Fare Distribution by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Fare')
+plt.show()
+
+# Distribution of Age
+plt.figure(figsize=(8, 6))
+sns.histplot(titanic['age'].dropna(), bins=30, kde=True)
+plt.title('Distribution of Passenger Age')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+# Survival Rate by Passenger Class
+plt.figure(figsize=(8, 6))
+sns.barplot(x='pclass', y='survived', data=titanic)
+plt.title('Survival Rate by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Survival Rate')
+plt.show()

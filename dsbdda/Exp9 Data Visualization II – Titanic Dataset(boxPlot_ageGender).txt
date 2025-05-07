@@ -1,0 +1,29 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = sns.load_dataset('titanic')
+
+# Drop missing age values
+df = df.dropna(subset=['age'])
+
+# Convert 'survived' column from 0/1 to labels
+df['survived'] = df['survived'].map({0: 'Not Survived', 1: 'Survived'})
+
+# Create plot
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='sex', y='age', hue='survived', data=df)
+plt.title("Age Distribution by Gender and Survival")
+plt.xlabel("Gender")
+plt.ylabel("Age")
+plt.show()
+
+#sns.boxplot(x='sex', y='age', hue='survived', data=df, palette={'Survived': 'orange', 'Not Survived': 'blue'})
+# Print observations in the output
+print("\nsample Observations / Inference:")
+print("Observations from the Box Plot:\n")
+print("- Children and younger females appear to have higher survival rates.")
+print("- Among females, the median age of survivors is slightly lower than non-survivors.")
+print("- Among males, many younger passengers did not survive, and older males had lower survival rates.")
+print("- The age range (IQR) for male non-survivors is wider than for male survivors.")
+print("- The plot supports the idea that 'women and children first' might have influenced survival.")

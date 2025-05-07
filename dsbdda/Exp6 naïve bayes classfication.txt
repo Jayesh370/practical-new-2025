@@ -1,0 +1,47 @@
+# Import libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Step 1: Load dataset
+df = pd.read_csv('Iris.csv')
+
+df
+
+# Step 2: Label encoding for Species column
+label_encoder = LabelEncoder()
+df['Species'] = label_encoder.fit_transform(df['Species'])
+
+# Step 3: Prepare X and y
+X = df[['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']]
+y = df['Species']
+
+# Step 4: Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+
+# Step 5: Train Naive Bayes model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Step 6: Predictions
+y_pred = model.predict(X_test)
+
+y_pred
+
+# Step 7: Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+# Step 8: Metrics Calculation (macro average used for multi-class)
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred, average='macro')
+recall = recall_score(y_test, y_pred, average='macro')
+
+print("\nMetrics:")
+print("Accuracy      :", round(accuracy, 2))
+print("Error Rate    :", round(error_rate, 2))
+print("Precision     :", round(precision, 2))
+print("Recall        :", round(recall, 2))

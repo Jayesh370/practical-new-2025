@@ -1,0 +1,51 @@
+import pandas as pd
+data = {
+'Age_Group': ['20-30', '20-30', '30-40', '30-40', '40-50', '40-50', '20-30', '30-40', '40-50', '20-30'],
+'Income': [30000, 35000, 45000, 50000, 60000, 65000, 32000, 48000, 58000, 33000],
+'Education': ['Bachelor', 'Bachelor', 'Master', 'Master', 'PhD', 'PhD', 'Bachelor', 'Master', 'PhD', 'Bachelor']
+}
+df = pd.DataFrame(data)
+df
+grouped_data = df.groupby('Age_Group')['Income'].agg(['mean', 'median', 'min', 'max', 'std'])
+grouped_data
+age_group_mapping = {'20-30': 1, '30-40': 2, '40-50': 3}
+df['Age_Group_Numeric'] = df['Age_Group'].map(age_group_mapping)
+df[['Age_Group', 'Age_Group_Numeric']]
+df1 = pd.read_csv('Iris.csv')
+df1.head()
+df1.describe()
+set1 = (df1['Species'] == 'Iris-virginica')
+print(df1[set1].describe())
+set2 = (df1['Species'] == 'Iris-versicolor')
+print(df1[set2].describe())
+set3 = (df1['Species'] == 'Iris-setosa')
+print(df1[set3].describe())
+df1['Species'].unique()
+df1.groupby(['Species']).mean()
+df1.groupby(['Species']).median()
+df1.groupby(['Species']).std()
+
+or
+
+import numpy as np
+import pandas as np
+import seaborn as sns
+df=sns.load_dataset('tips')
+df
+df.rename(columns={'sex':'gender'} ,inplace=True)
+df
+df.groupby('gender') ['total_bill'].agg(['mean','median','min','max','std'])
+df['gender']= df['gender'].map({'Male':0,'Female':1})  # Optional
+df
+
+another_df=sns.load_dataset('iris')
+another_df
+another_df['species'].unique()
+
+setosa = another_df[another_df['species'] == "setosa"]
+versicolor = another_df[another_df['species'] == "versicolor"]
+virginica = another_df[another_df['species'] == "virginica"]
+
+setosa.describe()
+versicolor.describe()
+virginica.describe()
